@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <script language="javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script language="javascript" src="./ping.js"></script>
+    <script>
+    $(function(){
+        var timerId;
+        var isStopPing = false;
+
+
+        $("#pingStart").click(function(){
+          $(this).attr("disabled", true);
+          $("#pingStop").attr("disabled", false);
+
+
+          $.ping($("#webSiteUrl").val(),
+          function(pingResult){
+            timerId = setInterval(function(){
+              if(isStopPing == true){
+                clearInterval(timerId);
+                isStopPing = false;
+                return;
+              }
+
+
+              if(pingResult){
+                $("#pingResultMsg").append("{ url:" + pingResult.url + " ,ackTime:" + pingResult.ackTime + " ,status:" + pingResult.status + " }<br>");
+                clearInterval(timerId);
+                $("#pingStart").trigger("click");
+              }
+            },1000);
+          }
+        );
+      });
+
+
+      $("#pingStop").click(function(){
+        isStopPing = true;
+        $("#pingStart").attr("disabled", false);
+        $(this).attr("disabled", true);
+      });
+
+
+      $("#clearPingResultMsg").click(function(){
+        $("#pingResultMsg").html("");
+      });
+    });
+    </script>
+  </head>
+  <body>
+    <div>
+      WebSiteURL:<input type="text" size="50" id="webSiteUrl">
+    </div>
+    <div>
+      <input type="button" id="pingStart" value="PingStart">
+      <input type="button" id="pingStop" value="PingStop" disabled="disabled">
+      <input type="button" id="clearPingResultMsg" value="ClearPingResultMsg">
+    </div>
+    <div id="pingResultMsg"></div>
+  </body>
+</html>
