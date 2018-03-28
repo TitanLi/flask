@@ -9,7 +9,7 @@ def hello(name=None):
 
 @app.route('/post', methods=['POST'])
 def post():
-    if not request.json:
-        abort(400)
-    print request.json
-    return json.dumps(request.json)
+    email = request.form.get('account')
+    password = request.form.get('password')
+    print "email:"+email+"\tpassword:"+password
+    return 'ok'
