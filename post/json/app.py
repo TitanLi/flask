@@ -1,8 +1,8 @@
-from flask import Flask,request
+from flask import Flask,request,abort
 import json
 app = Flask(__name__)
 
-@app.route('/post', methods=['POST'])
+@app.route('/post/json', methods=['POST'])
 def post():
     # {"a":"apple"}
     # method one
